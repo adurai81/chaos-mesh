@@ -29,6 +29,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/pingcap/chaos-mesh/api/v1alpha1"
+	"github.com/pingcap/chaos-mesh/controllers/reconciler"
 	"github.com/pingcap/chaos-mesh/controllers/twophase"
 	pb "github.com/pingcap/chaos-mesh/pkg/chaosdaemon/pb"
 	"github.com/pingcap/chaos-mesh/pkg/utils"
@@ -50,12 +51,12 @@ func NewReconciler(c client.Client, log logr.Logger, req ctrl.Request) twophase.
 	}
 }
 
-func (r *Reconciler) Object() twophase.InnerObject {
+func (r *Reconciler) Object() reconciler.InnerObject {
 	return &v1alpha1.TimeChaos{}
 }
 
 // Apply is a functions used to apply time chaos.
-func (r *Reconciler) Apply(ctx context.Context, req ctrl.Request, chaos twophase.InnerObject) error {
+func (r *Reconciler) Apply(ctx context.Context, req ctrl.Request, chaos reconciler.InnerObject) error {
 	r.Log.Info("applying time")
 
 	timechaos, ok := chaos.(*v1alpha1.TimeChaos)
@@ -148,7 +149,7 @@ func (r *Reconciler) setTimeOffset(ctx context.Context, pod *v1.Pod, value strin
 	return err
 }
 
-func (r *Reconciler) Recover(ctx context.Context, req ctrl.Request, chaos twophase.InnerObject) error {
+func (r *Reconciler) Recover(ctx context.Context, req ctrl.Request, chaos reconciler.InnerObject) error {
 	timechaos, ok := chaos.(*v1alpha1.TimeChaos)
 	if !ok {
 		err := errors.New("chaos is not TimeChaos")

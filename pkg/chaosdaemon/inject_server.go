@@ -15,7 +15,8 @@ const (
 	InjectServerAddress = "127.0.0.1:50051"
 )
 
-func (s *Server) SetTimeOffset(ctx context.Context, req *pb.TimeRequest) (*empty.Empty, error) {
+// SetTimeOffset is to implement ChaosDeamon service
+func (s *daemonServer) SetTimeOffset(ctx context.Context, req *pb.TimeRequest) (*empty.Empty, error) {
 	address := os.Getenv("INJECT_SERVER")
 	if address == "" {
 		address = InjectServerAddress
@@ -44,7 +45,8 @@ func (s *Server) SetTimeOffset(ctx context.Context, req *pb.TimeRequest) (*empty
 	})
 }
 
-func (s *Server) RecoverTimeOffset(ctx context.Context, req *pb.TimeRequest) (*empty.Empty, error) {
+// RecoverTimeOffset is to implement ChaosDeamon service
+func (s *daemonServer) RecoverTimeOffset(ctx context.Context, req *pb.TimeRequest) (*empty.Empty, error) {
 	address := os.Getenv("INJECT_SERVER")
 	if address == "" {
 		address = InjectServerAddress
